@@ -1,19 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\BookmarkController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'bookmarks'], function ($router) {
+    Route::get('/', [BookmarkController::class, 'index']);
+    Route::get('/{id}', [BookmarkController::class, 'show']);
+    Route::post('/', [BookmarkController::class, 'store']);
+    Route::put('/{id}', [BookmarkController::class, 'update']);
+    Route::delete('/{id}', [BookmarkController::class, 'destroy']);
 });
