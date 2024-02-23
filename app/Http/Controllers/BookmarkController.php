@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Bookmark;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\JsonResponse;
 
 class BookmarkController extends Controller
 {
@@ -20,6 +22,12 @@ class BookmarkController extends Controller
      */
     public function store(Request $request)
     {
+        $result = $this->validationCheck($request->all());
+
+        if ($result instanceof JsonResponse) {
+            return $result;
+        }
+
         $params = $request->all();
         return Bookmark::create($params);
     }
@@ -37,6 +45,12 @@ class BookmarkController extends Controller
      */
     public function update(Request $request, int $id)
     {
+        $result = $this->validationCheck($request->all());
+
+        if ($result instanceof JsonResponse) {
+            return $result;
+        }
+
         $bookmark = Bookmark::find($id);
         $bookmark->name = $request->name;
         $bookmark->url = $request->url;
@@ -54,5 +68,21 @@ class BookmarkController extends Controller
         $bookmark?->delete();
         
         return response()->noContent();
+    }
+
+    /**
+     * Verify that request params are valid values.
+     */
+    protected function validationCheck(array $params): JsonResponse|true
+    {
+        $validator = Validator::make($params, [
+            'name' => 'required|max:100',
+            'url' => 'required|url:http,https|max:200'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        return true;
     }
 }
