@@ -2,21 +2,24 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Bookmark;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    protected const BOOKMARKS = [
+        ['name' => 'Facebook', 'url' => 'https://www.facebook.com'],
+        ['name' => 'Twitter', 'url' => 'https://twitter.com'],
+        ['name' => 'TikTok', 'url' => 'https://www.tiktok.com']
+    ];
+
     /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        foreach (self::BOOKMARKS as $bookmark) {
+            Bookmark::create($bookmark);
+        }
     }
 }
