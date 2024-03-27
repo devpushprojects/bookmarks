@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Bookmark;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
 
@@ -23,11 +23,11 @@ class BookmarkController extends Controller
     public function store(Request $request)
     {
         $result = $this->validationCheck($request->all());
-
+    
         if ($result instanceof JsonResponse) {
             return $result;
         }
-
+    
         $params = $request->all();
         return Bookmark::create($params);
     }
@@ -35,7 +35,7 @@ class BookmarkController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $id)
+    public function show(string $id)
     {
         return Bookmark::find($id);
     }
@@ -43,26 +43,26 @@ class BookmarkController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, int $id)
+    public function update(Request $request, string $id)
     {
         $result = $this->validationCheck($request->all());
 
         if ($result instanceof JsonResponse) {
             return $result;
         }
-
+    
         $bookmark = Bookmark::find($id);
         $bookmark->name = $request->name;
         $bookmark->url = $request->url;
         $bookmark->save();
-
+    
         return $bookmark;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id)
+    public function destroy(string $id)
     {
         $bookmark = Bookmark::find($id);
         $bookmark?->delete();
